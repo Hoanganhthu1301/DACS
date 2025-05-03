@@ -13,7 +13,7 @@
         <li class="list-group-item d-flex justify-content-between align-items-center cart-item">
             <div class="d-flex align-items-center">
                 <?php if ($item['image']): ?>
-                    <img src="/webbanhang/<?php echo $item['image']; ?>" 
+                    <img src="/DACS/<?php echo $item['image']; ?>" 
                         alt="Hình sản phẩm" 
                         class="product-image">
                 <?php else: ?>
@@ -26,7 +26,8 @@
                     <p><strong>🍅 Giá:</strong> <?php echo htmlspecialchars($item['price'], ENT_QUOTES, 'UTF-8'); ?> VND</p>
 
                     <!-- Form cập nhật số lượng -->
-                    <form method="POST" action="/webbanhang/Product/updateQuantity/<?php echo $id; ?>" class="update-form">
+                    <form method="POST" action="/DACS/Product/updateQuantity" class="update-form">
+                        <input type="hidden" name="product_id" value="<?php echo $id; ?>">
                         <label for="quantity-<?php echo $id; ?>"><strong>🍅 Số lượng:</strong></label>
                         <input type="number" id="quantity-<?php echo $id; ?>" 
                                name="quantity" 
@@ -39,7 +40,7 @@
                     <p><strong>🍅 Thành tiền:</strong> <?php echo number_format($itemTotal, 0, ',', '.'); ?> VND</p>
                 </div>
             </div>
-            <a href="/webbanhang/Product/removeFromCart/<?php echo $id; ?>" class="btn btn-danger btn-sm">Xóa</a>
+            <a href="/DACS/Product/removeFromCart/<?php echo $id; ?>" class="btn btn-danger btn-sm">Xóa</a>
         </li>
         <?php endforeach; ?>
     </ul>
@@ -54,8 +55,8 @@
 <?php endif; ?>
 
 <div class="d-flex justify-content-center mt-3 cart-buttons">
-    <a href="/webbanhang/Product" class="btn btn-green mr-2">🛒 Tiếp tục mua sắm</a>
-    <a href="/webbanhang/Product/checkout" class="btn btn-danger">💳 Thanh toán</a>
+    <a href="/DACS/Product" class="btn btn-green mr-2">🛒 Tiếp tục mua sắm</a>
+    <a href="/DACS/Product/checkout" class="btn btn-danger">💳 Thanh toán</a>
 </div>
 
 <?php include 'app/views/shares/footer.php'; ?>

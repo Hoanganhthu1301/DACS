@@ -22,59 +22,58 @@ class AccountController {
     public function save() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $username = $_POST['username'] ?? '';
-            $fullname = $_POST['fullname'] ?? '';
+            $fullname = $_POST['full_name'] ?? '';
             $password = $_POST['password'] ?? '';
-            $confirmPassword = $_POST['confirmpassword'] ?? '';
-    
+            $email = $_POST['email'] ?? '';
+            $phone = $_POST['phone'] ?? '';
+            $birthday = $_POST['birthday'] ?? '';
+
             $errors = [];
-    
+
             if (empty($username)) {
                 $errors['username'] = "Vui lòng nhập Username!";
             }
-    
+
             if (empty($fullname)) {
-                $errors['fullname'] = "Vui lòng nhập Họ và Tên!";
+                $errors['full_name'] = "Vui lòng nhập Họ và Tên!";
             }
-    
+
             if (empty($password)) {
                 $errors['password'] = "Vui lòng nhập Mật khẩu!";
-            } else {
-                // Kiểm tra điều kiện mật khẩu
-                if (strlen($password) < 8) {
-                    $errors['password'] = "Mật khẩu phải có ít nhất 8 ký tự!";
-                }
-                
-                // Kiểm tra có ít nhất 1 chữ in hoa
-                if (!preg_match('/[A-Z]/', $password)) {
-                    $errors['password'] = "Mật khẩu phải có ít nhất 1 ký tự in hoa!";
-                }
-                
-                // Kiểm tra có ít nhất 1 ký tự đặc biệt
-                if (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
-                    $errors['password'] = "Mật khẩu phải có ít nhất 1 ký tự đặc biệt!";
-                }
             }
-    
-            if ($password !== $confirmPassword) {
-                $errors['confirmPass'] = "Mật khẩu và xác nhận chưa trùng khớp!";
+
+            if (empty($email)) {
+                $errors['email'] = "Vui lòng nhập Email!";
             }
-    
+
+            if (empty($phone)) {
+                $errors['phone'] = "Vui lòng nhập Số điện thoại!";
+            }
+
+            if (empty($birthday)) {
+                $errors['birthday'] = "Vui lòng nhập Ngày sinh!";
+            }
+
             // Kiểm tra username đã tồn tại chưa
             $account = $this->accountModel->getAccountByUsername($username);
-    
+
             if ($account) {
                 $errors['account'] = "Tài khoản này đã có người đăng ký!";
             }
-    
+
             if (count($errors) > 0) {
                 include_once 'app/views/account/register.php';
             } else {
                 // Mã hóa mật khẩu
                 $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
-                $result = $this->accountModel->save($username, $fullname, $password);
-    
+
+                // Kiểm tra xem đã có admin nào chưa
+                $role = $this->accountModel->hasAdmin() ? 'user' : 'admin';
+
+                $result = $this->accountModel->save($username, $fullname, $password, $email, $phone, $birthday, $role);
+
                 if ($result) {
-                    header('Location: /webbanhang/account/login');
+                    header('Location: /DACS/account/login');
                     exit();
                 }
             }
@@ -84,12 +83,12 @@ class AccountController {
     public function logout() {
         session_start();
         session_destroy(); // Hủy toàn bộ session
-        header('Location: /webbanhang/account/login');
+        header('Location: /DACS/account/login');
         exit();
     }
     public function profile() {
         if (!SessionHelper::isLoggedIn()) {
-            header('Location: /webbanhang/account/login');
+            header('Location: /DACS/account/login');
             exit();
         }
     
@@ -98,7 +97,7 @@ class AccountController {
     
     public function updateProfile() {
         if (!SessionHelper::isLoggedIn()) {
-            header('Location: /webbanhang/account/login');
+            header('Location: /DACS/account/login');
             exit();
         }
     
@@ -132,15 +131,15 @@ class AccountController {
             $this->accountModel->updatePassword($username, $hashed);
         }
     
-        echo "<script>alert('Cập nhật thành công!'); window.location='/webbanhang/account/profile';</script>";
+        echo "<script>alert('Cập nhật thành công!'); window.location='/DACS/account/profile';</script>";
     }
     public function checkLogin() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $username = $_POST['username'] ?? '';
             $password = $_POST['password'] ?? '';
-    
+
             $account = $this->accountModel->getAccountByUsername($username);
-    
+
             if ($account) {
                 if (password_verify($password, $account->password)) {
                     // ✅ Gán đầy đủ thông tin tài khoản vào session
@@ -149,14 +148,14 @@ class AccountController {
                         'fullname' => $account->fullname, // <--- QUAN TRỌNG
                         'role'     => $account->role
                     ];
-    
-                    header('Location: /webbanhang/product');
+
+                    header('Location: /DACS/product');
                     exit();
                 } else {
-                    echo "⚠️ Mật khẩu không đúng!";
+                    echo "<script>alert('⚠️ Mật khẩu không đúng!'); window.location='/DACS/account/login';</script>";
                 }
             } else {
-                echo "⚠️ Không tìm thấy tài khoản!";
+                echo "<script>alert('⚠️ Không tìm thấy tài khoản!'); window.location='/DACS/account/login';</script>";
             }
         }
     }

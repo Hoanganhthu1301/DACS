@@ -2,73 +2,51 @@
 
 <?php
 
-
 if (isset($errors)) {
-
-echo "<ul>";
-
-foreach ($errors as $err) {
-
-echo "<li class='text-danger'>$err</li>";
-
+    echo "<ul>";
+    foreach ($errors as $err) {
+        echo "<li class='text-danger'>$err</li>";
+    }
+    echo "</ul>";
 }
-
-echo "</ul>";
-
-}
-
 
 ?>
 
-
 <div class="card-body p-5 text-center">
 
-<form class="user" action="/webbanhang/account/save" method="post">
+<form method="POST" action="/DACS/account/save" class="user">
+    <div class="form-group">
+        <label for="username">Tên đăng nhập:</label>
+        <input type="text" id="username" name="username" class="form-control" required>
+    </div>
 
-<div class="form-group row">
+    <div class="form-group">
+        <label for="password">Mật khẩu:</label>
+        <input type="password" id="password" name="password" class="form-control" required>
+    </div>
 
-<div class="col-sm-6 mb-3 mb-sm-0">
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" class="form-control" required>
+    </div>
 
-<input type="text" class="form-control form-control-user" id="username" name="username" placeholder="username">
+    <div class="form-group">
+        <label for="phone">Số điện thoại:</label>
+        <input type="text" id="phone" name="phone" class="form-control" required>
+    </div>
 
-</div>
+    <div class="form-group">
+        <label for="full_name">Họ và tên:</label>
+        <input type="text" id="full_name" name="full_name" class="form-control" required>
+    </div>
 
-<div class="col-sm-6">
+    <div class="form-group">
+        <label for="birthday">Ngày sinh:</label>
+        <input type="date" id="birthday" name="birthday" class="form-control" required>
+    </div>
 
-<input type="text" class="form-control form-control-user" id="fullname" name="fullname" placeholder="fullname">
-
-</div>
-
-</div>
-
-<div class="form-group row">
-
-<div class="col-sm-6 mb-3 mb-sm-0">
-
-<input type="password" class="form-control form-control-user" id="password" name="password" placeholder="password">
-
-</div>
-
-<div class="col-sm-6">
-
-<input type="password" class="form-control form-control-user" id="confirmpassword" name="confirmpassword" placeholder="confirmpassword">
-
-</div>
-
-</div>
-
-<div class="form-group text-center">
-
-<button class="btn btn-primary btn-icon-split p-3">
-
-Register
-
-</button>
-
-</div>
-
+    <button type="submit" class="btn btn-primary">Đăng ký</button>
 </form>
-
 
 </div>
 

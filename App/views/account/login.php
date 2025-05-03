@@ -19,7 +19,7 @@
                             </div>
                         <?php endif; ?>
 
-                        <form action="/webbanhang/account/checklogin" method="post">
+                        <form action="/DACS/account/checklogin" method="post">
                             <div class="mb-md-5 mt-md-4 pb-5">
                                 <h2 class="fw-bold mb-2 text-uppercase">🍅 Đăng Nhập 🍅</h2>
                                 <p class="text-black-50 mb-5">Vui lòng nhập tài khoản và mật khẩu của bạn nhé!</p>
@@ -35,7 +35,7 @@
                                 </div>
 
                                 <p class="small mb-5 pb-lg-2">
-                                <a href="/webbanhang/app/views/account/forgot_password.php">Quên mật khẩu?</a>
+                                <a href="/DACS/app/views/account/forgot_password.php">Quên mật khẩu?</a>
 
                                 </p>
 
@@ -51,7 +51,7 @@
                             <div>
                                 <p class="mb-0">
                                     Chưa có tài khoản? 
-                                    <a href="/webbanhang/account/register" class="text-black-50 fw-bold">Đăng ký ngay!</a>
+                                    <a href="/DACS/account/register" class="text-black-50 fw-bold">Đăng ký ngay!</a>
                                 </p>
                             </div>
                         </form>

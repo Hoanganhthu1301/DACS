@@ -67,10 +67,10 @@
                         </div>
                         <div class="card-body text-center">
                             <?php if ($product->image): ?>
-                                <img src="/webbanhang/<?= $product->image ?>" class="img-fluid mb-2 tomato-img">
+                                <img src="/DACS/<?= $product->image ?>" class="img-fluid mb-2 tomato-img">
                             <?php endif; ?>
                             <p class="fs-5 fw-bold"><?= number_format($product->price, 0, ',', '.') ?> VND</p>
-                            <a href="/webbanhang/Product/show/<?= $product->id ?>" class="btn tomato-btn px-4 py-2">
+                            <a href="/DACS/Product/show/<?= $product->id ?>" class="btn tomato-btn px-4 py-2">
                                 Xem ngay 🍅
                             </a>
                         </div>

@@ -6,16 +6,23 @@ require_once('app/helpers/auth.php'); // 🔥 THÊM DÒNG NÀY
 
 class ProductController {
     private $productModel;
+    private $categoryModel;
     private $db;
 
     public function __construct() {
         $this->db = (new Database())->getConnection();
         $this->productModel = new ProductModel($this->db);
+        $this->categoryModel = new CategoryModel($this->db);
     }
 
     public function index() {
         $products = $this->productModel->getProducts();
-        include 'app/views/product/list.php';
+
+        if (isAdmin()) {
+            include 'app/views/admin/product/list.php'; // Giao diện admin
+        } else {
+            include 'app/views/user/product/list.php'; // Giao diện user
+        }
     }
 
     public function show($id)
@@ -24,7 +31,7 @@ class ProductController {
     
         if (!$product) {
             // Nếu không có sản phẩm → chuyển hướng thay vì hiển thị view show.php
-            header('Location: /webbanhang/Product');
+            header('Location: /DACS/Product');
             exit();
         }
     
@@ -41,8 +48,8 @@ class ProductController {
             exit;
         }
 
-        $categories = (new CategoryModel($this->db))->getCategories();
-        include_once 'app/views/product/add.php';
+        $categories = $this->categoryModel->getCategories();
+        include_once 'app/views/admin/product/add.php'; // Giao diện admin
     }
 
     public function save() {
@@ -66,10 +73,10 @@ class ProductController {
 
             if (is_array($result)) {
                 $errors = $result;
-                $categories = (new CategoryModel($this->db))->getCategories();
+                $categories = $this->categoryModel->getCategories();
                 include 'app/views/product/add.php';
             } else {
-                header('Location: /webbanhang/Product');
+                header('Location: /DACS/Product');
             }
         }
     }
@@ -81,10 +88,10 @@ class ProductController {
         }
 
         $product = $this->productModel->getProductById($id);
-        $categories = (new CategoryModel($this->db))->getCategories();
+        $categories = $this->categoryModel->getCategories();
 
         if ($product) {
-            include 'app/views/product/edit.php';
+            include 'app/views/admin/product/edit.php'; // Giao diện admin
         } else {
             echo "Không thấy sản phẩm.";
         }
@@ -111,7 +118,7 @@ class ProductController {
             $edit = $this->productModel->updateProduct($id, $name, $description, $price, $category_id, $image);
 
             if ($edit) {
-                header('Location: /webbanhang/Product');
+                header('Location: /DACS/Product');
             } else {
                 echo "Đã xảy ra lỗi khi lưu sản phẩm.";
             }
@@ -125,7 +132,7 @@ class ProductController {
         }
 
         if ($this->productModel->deleteProduct($id)) {
-            header('Location: /webbanhang/Product');
+            header('Location: /DACS/Product');
         } else {
             echo "Đã xảy ra lỗi khi xóa sản phẩm.";
         }
@@ -139,7 +146,9 @@ class ProductController {
             mkdir($target_dir, 0777, true); 
         } 
      
-        $target_file = $target_dir . basename($file["name"]); 
+        // Xử lý tên file để tránh trùng lặp
+        $file_name = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($file["name"]));
+        $target_file = $target_dir . $file_name; 
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION)); 
      
         // Kiểm tra xem file có phải là hình ảnh không 
@@ -172,9 +181,9 @@ class ProductController {
     
         if (!empty($keyword)) {
             $products = $this->productModel->searchProducts($keyword);
-            include 'app/views/product/search.php'; // View kết quả tìm kiếm
+            include 'app/views/user/product/search.php'; // Sửa đường dẫn để trỏ đến đúng vị trí file
         } else {
-            header('Location: /webbanhang/Product');
+            header('Location: /DACS/Product');
             exit();
         }
     }
@@ -224,20 +233,18 @@ $_SESSION['cart'][$id] = [
 }
 
 
-header('Location: /webbanhang/Product/cart');
+header('Location: /DACS/Product/cart'); // Sửa đường dẫn để chuyển hướng đúng đến giỏ hàng của DACS
 
 }
 
 
-    public function cart() 
-    { 
-        $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : []; 
-        include 'app/views/product/cart.php'; 
+    public function cart() {
+        $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+        include 'app/views/user/product/cart.php'; // Giao diện user
     } 
  
-    public function checkout() 
-    { 
-        include 'app/views/product/checkout.php'; 
+    public function checkout() {
+        include 'app/views/user/product/checkout.php'; // Giao diện user
     }
     public function processCheckout() 
     { 
@@ -295,9 +302,8 @@ quantity, price) VALUES (:order_id, :product_id, :quantity, :price)";
         } 
     } 
  
-    public function orderConfirmation() 
-    { 
-        include 'app/views/product/orderConfirmation.php'; 
+    public function orderConfirmation() {
+        include 'app/views/user/product/orderConfirmation.php'; // Giao diện user
     } 
     public function sort()
 {
@@ -307,6 +313,41 @@ quantity, price) VALUES (:order_id, :product_id, :quantity, :price)";
     include 'app/views/product/list.php';
 }
 
+public function userList() {
+        $products = $this->productModel->getProducts();
+        include 'app/views/user/product/list.php'; // Giao diện chỉ hiển thị danh sách
+    }
+
+    public function adminSearch() {
+        $keyword = $_GET['keyword'] ?? '';
+
+        if (!empty($keyword)) {
+            $products = $this->productModel->searchProducts($keyword);
+            include 'app/views/admin/product/search.php'; // Giao diện tìm kiếm cho admin
+        } else {
+            header('Location: /DACS/Product');
+            exit();
+        }
+    }
+
+    public function updateQuantity() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $productId = $_POST['product_id'] ?? null;
+            $quantity = $_POST['quantity'] ?? null;
+
+            if ($productId && $quantity && isset($_SESSION['cart'][$productId])) {
+                if ($quantity > 0) {
+                    $_SESSION['cart'][$productId]['quantity'] = $quantity;
+                } else {
+                    unset($_SESSION['cart'][$productId]); // Xóa sản phẩm nếu số lượng <= 0
+                }
+            }
+
+            header('Location: /DACS/Product/cart');
+            exit();
+        }
+    }
+
 } 
 
-?> 
+?>

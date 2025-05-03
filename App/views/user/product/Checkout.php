@@ -1,7 +1,7 @@
 <?php include 'app/views/shares/header.php'; ?>
 <h1 class="text-center text-danger">🍅 Thanh toán 🍅</h1>
 
-<form method="POST" action="/webbanhang/Product/processCheckout" class="checkout-form">
+<form method="POST" action="/DACS/Product/processCheckout" class="checkout-form">
     <div class="form-group">
         <label for="name" class="text-success">🍅 Họ tên:</label>
         <input type="text" id="name" name="name" class="form-control input-custom" required>
@@ -21,7 +21,7 @@
 </form>
 
 <div class="d-flex justify-content-center mt-3">
-    <a href="/webbanhang/Product/cart" class="btn btn-green">🔙 Quay lại giỏ hàng</a>
+    <a href="/DACS/Product/cart" class="btn btn-green">🔙 Quay lại giỏ hàng</a>
 </div>
 
 <?php include 'app/views/shares/footer.php'; ?>

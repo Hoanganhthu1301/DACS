@@ -13,7 +13,7 @@
 
                 <?php if (!empty($product->image)) : ?>
                     <p><strong>Hình ảnh:</strong></p>
-                    <img src="/webbanhang/<?= htmlspecialchars($product->image) ?>" 
+                    <img src="/DACS/<?= htmlspecialchars($product->image) ?>" 
                          class="img-thumbnail" 
                          alt="Hình sản phẩm" 
                          style="max-width: 300px; border-radius: 10px; box-shadow: 0 4px 12px rgba(255, 99, 71, 0.4);">
@@ -26,7 +26,7 @@
         <!-- Form Bình luận -->
         <div class="mt-4">
             <h4 style="color: #ff6347; font-weight: bold;">🍅 Bình luận sản phẩm 🍅</h4>
-            <form action="/webbanhang/Product/addComment/<?= $product->id ?>" method="POST">
+            <form action="/DACS/Product/addComment/<?= $product->id ?>" method="POST">
                 <div class="mb-3">
                     <label for="comment" class="form-label">Nhập bình luận của bạn:</label>
                     <textarea id="comment" name="comment" class="form-control" rows="4" style="border-radius: 10px; border: 1px solid #ff6347;" required></textarea>
@@ -56,7 +56,7 @@
         <div class="alert alert-warning">Không tìm thấy sản phẩm.</div>
     <?php endif; ?>
 
-    <a href="/webbanhang/Product" class="btn btn-outline-secondary mt-3" style="border-radius: 25px; color: #ff6347; border: 1px solid #ff6347;">← Quay lại danh sách</a>
+    <a href="/DACS/Product" class="btn btn-outline-secondary mt-3" style="border-radius: 25px; color: #ff6347; border: 1px solid #ff6347;">← Quay lại danh sách</a>
 </div>
 
 <?php include 'app/views/shares/footer.php'; ?>

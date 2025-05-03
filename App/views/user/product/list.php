@@ -5,11 +5,10 @@
 
     <!-- Button to add new product -->
     <div class="d-flex justify-content-between flex-wrap mb-3">
-    <a href="/webbanhang/Product/add" class="btn btn-success mb-2">🍅 Thêm sản phẩm mới 🍅</a>
 
     <div class="d-flex flex-wrap gap-2">
         <!-- Tìm kiếm -->
-        <form action="/webbanhang/Product/search" method="GET" class="d-flex mb-4">
+        <form action="/DACS/Product/search" method="GET" class="d-flex mb-4">
     <input type="text" name="keyword" class="form-control me-2" placeholder="🔍 Tìm sản phẩm..." required>
     <button type="submit" class="btn btn-primary">Tìm</button>
 </form>
@@ -19,7 +18,7 @@
 <?php endif; ?>
         <!-- Sắp xếp -->
         <div class="d-flex justify-content-end mb-3">
-    <form method="GET" action="/webbanhang/Product/sort" class="form-inline">
+    <form method="GET" action="/DACS/Product/sort" class="form-inline">
         <label class="me-2">Sắp xếp theo giá:</label>
         <select name="order" class="form-control me-2" onchange="this.form.submit()">
             <option value="asc" <?= ($_GET['order'] ?? '') == 'asc' ? 'selected' : '' ?>>Tăng dần</option>
@@ -40,13 +39,13 @@
             <div class="col-md-4 mb-4">
                 <div class="card shadow-sm">
                     <?php if ($product->image): ?>
-                        <img src="/webbanhang/<?php echo $product->image; ?>" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
+                        <img src="/DACS/<?php echo $product->image; ?>" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
                     <?php else: ?>
                         <img src="https://via.placeholder.com/300" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
                     <?php endif; ?>
                     <div class="card-body">
                         <h5 class="card-title">
-                            <a href="/webbanhang/Product/show/<?php echo $product->id; ?>" class="text-decoration-none text-light">
+                            <a href="/DACS/Product/show/<?php echo $product->id; ?>" class="text-decoration-none text-light">
                                 <?php echo htmlspecialchars($product->name, ENT_QUOTES, 'UTF-8'); ?>
                             </a>
                         </h5>
@@ -54,9 +53,8 @@
                         <p class="card-text"><strong>Giá:</strong> <?php echo htmlspecialchars($product->price, ENT_QUOTES, 'UTF-8'); ?> VND</p>
                         <p class="card-text"><strong>Danh mục:</strong> <?php echo htmlspecialchars($product->category_name, ENT_QUOTES, 'UTF-8'); ?></p>
                         <div class="d-flex justify-content-between">
-                            <a href="/webbanhang/Product/edit/<?php echo $product->id; ?>" class="btn btn-warning btn-sm">Sửa</a>
-                            <a href="/webbanhang/Product/delete/<?php echo $product->id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">Xóa</a>
-                            <a href="/webbanhang/Product/addToCart/<?php echo $product->id; ?>" class="btn btn-primary btn-sm">Thêm vào giỏ hàng</a>
+                          
+                            <a href="/DACS/Product/addToCart/<?php echo $product->id; ?>" class="btn btn-primary btn-sm">Thêm vào giỏ hàng</a>
                         </div>
                     </div>
                 </div>
@@ -248,3 +246,4 @@ footer {
 .cart-buttons .btn-danger:hover {
     background-color: #c0392b;
 }
+</style>

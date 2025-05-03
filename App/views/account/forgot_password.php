@@ -108,7 +108,7 @@
                             <div class="tomato-icon">🍅</div>
                             <h3 class="text-center mb-4">Quên Mật Khẩu</h3>
                         </div>
-                        <form action="/webbanhang/account/process-forgot-password.php" method="post">
+                        <form action="/DACS/account/process-forgot-password.php" method="post">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Nhập email của bạn</label>
                                 <input type="email" id="email" name="email" class="form-control" required>
@@ -118,7 +118,7 @@
                             </div>
                         </form>
                         <div class="text-center mt-3">
-                            <a href="/webbanhang/account/login" class="text-muted">Quay lại Đăng Nhập</a>
+                            <a href="/DACS/account/login" class="text-muted">Quay lại Đăng Nhập</a>
                         </div>
                     </div>
                 </div>
